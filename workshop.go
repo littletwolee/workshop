@@ -5,16 +5,18 @@ import (
 )
 
 type workShop struct {
-	pip  *pip
-	stop chan bool
-	jobs *jobs
-	wg   *sync.WaitGroup
+	chNum int
+	pip   *pip
+	stop  chan bool
+	jobs  *jobs
+	wg    *sync.WaitGroup
 }
 
-func NewWorkShop(workerNum int) *workShop {
+func NewWorkShop(chNum int) *workShop {
 	return &workShop{
-		pip:  newPip(workerNum),
-		stop: make(chan bool),
+		chNum: chNum,
+		pip:   &pip{},
+		stop:  make(chan bool),
 		jobs: &jobs{
 			m: new(sync.Mutex),
 		},
@@ -28,6 +30,10 @@ func (w *workShop) AddJobs(jobs ...job) {
 }
 
 func (w *workShop) Start() {
+	if w.pip == nil {
+		return
+	}
+	w.pip.refresh(w.chNum)
 	go func(w *workShop) {
 		for {
 			select {
@@ -59,42 +65,32 @@ func (w *workShop) Start() {
 func (w *workShop) Wait() {
 	w.wg.Wait()
 	w.stop <- true
+	w.pip.close()
 }
-
-// func (w *workShop) Stop() {
-// 	w.inPuts.close <- true
-// }
 
 type pip struct {
 	in  chan job
 	out chan bool
 }
 
-func newPip(n int) *pip {
-	return &pip{
-		in:  make(chan job, n),
-		out: make(chan bool, n),
-	}
+// func newPip(chNum int) *pip {
+// 	return &pip{
+// 		in:  make(chan job, chNum),
+// 		out: make(chan bool, chNum),
+// 	}
+// }
+
+func (p *pip) refresh(chNum int) {
+	p.in = make(chan job, chNum)
+	p.out = make(chan bool, chNum)
 }
 
-// func newInput(n int) *inPuts {
-// 	return &inPuts{
-// 		ch:  make(chan job, n),
-// 		pip: newPip(),
-// 	}
-// }
+func (p *pip) close() {
+	defer func() {
+		if recover() != nil {
 
-// type inPuts struct {
-// 	ch chan job
-// 	pip
-// }
-
-// func newOutPut(n int) *outPuts {
-// 	return &outPuts{
-// 		Ch: make(chan error, n),
-// 	}
-// }
-
-// type outPuts struct {
-// 	Ch chan error
-// }
+		}
+	}()
+	close(p.in)
+	close(p.out)
+}
