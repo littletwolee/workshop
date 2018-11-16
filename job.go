@@ -32,7 +32,7 @@ func (js *jobs) push(jobs ...job) {
 		js.list = js.list[:len(js.list)-1]
 	}
 	js.list = append(js.list, jobs...)
-	js.list = append(js.list, EOF)
+	js.list = append(js.list, _EOF)
 }
 
 func (js *jobs) len() int {
@@ -45,7 +45,7 @@ func (js *jobs) len() int {
 type e int
 
 const (
-	EOF e = iota
+	_EOF e = iota
 )
 
 func (e e) Do() error               { return nil }
