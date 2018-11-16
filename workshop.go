@@ -39,7 +39,7 @@ func (w *workShop) Start(obj interface{}) {
 			select {
 			case j := <-w.pip.in:
 				go func(j Job, w *workShop) {
-					j.CallBack(obj, j.Do)
+					j.callBack(obj, j.do)
 					w.wg.Done()
 					<-w.pip.out
 				}(j, w)
