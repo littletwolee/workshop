@@ -10,9 +10,9 @@ type jobs struct {
 }
 
 type Job interface {
-	do(obj interface{}) error
-	callBack(interface{}, func(obj interface{}) error)
-	exchange() Job
+	Do(obj interface{}) error
+	CallBack(interface{}, func(obj interface{}) error)
+	Exchange() Job
 }
 
 func (js *jobs) pop() Job {
@@ -49,6 +49,6 @@ const (
 	_EOF e = iota
 )
 
-func (e e) do(obj interface{}) error                                { return nil }
-func (e e) callBack(obj interface{}, f func(obj interface{}) error) {}
-func (e e) exchange() Job                                           { return nil }
+func (e e) Do(obj interface{}) error                                { return nil }
+func (e e) CallBack(obj interface{}, f func(obj interface{}) error) {}
+func (e e) Exchange() Job                                           { return nil }

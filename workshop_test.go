@@ -35,21 +35,20 @@ func newTestJob(id int) Job {
 	}
 }
 
-func (t *testJob) do(obj interface{}) error {
+func (t *testJob) Do(obj interface{}) error {
 	time.Sleep(1 * time.Second)
 	if t.id%2 == 0 {
 		fmt.Printf("mod 2==0: %d, sex: %s\n", t.id, obj.(*para).sex)
 		return nil
 	}
-
 	return fmt.Errorf("error %d", t.id)
 }
-func (t *testJob) callBack(obj interface{}, f func(obj interface{}) error) {
+func (t *testJob) CallBack(obj interface{}, f func(obj interface{}) error) {
 	if err := f(obj); err != nil {
 		fmt.Println(err)
 	}
 }
 
-func (t *testJob) exchange() Job {
+func (t *testJob) Exchange() Job {
 	return t
 }
