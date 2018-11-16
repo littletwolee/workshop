@@ -6,18 +6,18 @@ import (
 
 type jobs struct {
 	m    *sync.Mutex
-	list []job
+	list []Job
 }
 
-type job interface {
+type Job interface {
 	Do() error
 	CallBack(func() error)
 }
 
-func (js *jobs) pop() job {
+func (js *jobs) pop() Job {
 	js.m.Lock()
 	defer js.m.Unlock()
-	var job job
+	var job Job
 	if len(js.list) > 0 {
 		job = js.list[0]
 		js.list = js.list[1:]
@@ -25,7 +25,7 @@ func (js *jobs) pop() job {
 	return job
 }
 
-func (js *jobs) push(jobs ...job) {
+func (js *jobs) push(jobs ...Job) {
 	js.m.Lock()
 	defer js.m.Unlock()
 	if len(js.list) > 0 {

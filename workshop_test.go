@@ -10,7 +10,7 @@ func Test_WorkShop(t *testing.T) {
 	num := 1000
 	chNum := 10
 	ws := NewWorkShop(chNum)
-	var list []job
+	var list []Job
 	for index := 0; index < num; index++ {
 		list = append(list, newTestJob(index))
 	}
@@ -24,7 +24,7 @@ type testJob struct {
 	id int
 }
 
-func newTestJob(id int) job {
+func newTestJob(id int) Job {
 	return &testJob{
 		id: id,
 	}

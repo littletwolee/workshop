@@ -24,7 +24,7 @@ func NewWorkShop(chNum int) *workShop {
 	}
 }
 
-func (w *workShop) AddJobs(jobs ...job) {
+func (w *workShop) AddJobs(jobs ...Job) {
 	w.jobs.push(jobs...)
 	w.wg.Add(len(jobs))
 }
@@ -38,7 +38,7 @@ func (w *workShop) Start() {
 		for {
 			select {
 			case j := <-w.pip.in:
-				go func(j job, w *workShop) {
+				go func(j Job, w *workShop) {
 					j.CallBack(j.Do)
 					w.wg.Done()
 					<-w.pip.out
@@ -69,7 +69,7 @@ func (w *workShop) Wait() {
 }
 
 type pip struct {
-	in  chan job
+	in  chan Job
 	out chan bool
 }
 
@@ -81,7 +81,7 @@ type pip struct {
 // }
 
 func (p *pip) refresh(chNum int) {
-	p.in = make(chan job, chNum)
+	p.in = make(chan Job, chNum)
 	p.out = make(chan bool, chNum)
 }
 
