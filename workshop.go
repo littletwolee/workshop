@@ -29,17 +29,17 @@ func (w *workShop) AddJobs(jobs ...Job) {
 	w.wg.Add(len(jobs))
 }
 
-func (w *workShop) Start() {
+func (w *workShop) Start(obj interface{}) {
 	if w.pip == nil {
 		return
 	}
 	w.pip.refresh(w.chNum)
-	go func(w *workShop) {
+	go func(w *workShop, obj interface{}) {
 		for {
 			select {
 			case j := <-w.pip.in:
 				go func(j Job, w *workShop) {
-					j.CallBack(j.Do)
+					j.CallBack(obj, j.Do)
 					w.wg.Done()
 					<-w.pip.out
 				}(j, w)
@@ -48,7 +48,7 @@ func (w *workShop) Start() {
 			default:
 			}
 		}
-	}(w)
+	}(w, obj)
 	for {
 		j := w.jobs.pop()
 		if j == nil {
