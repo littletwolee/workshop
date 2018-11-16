@@ -55,7 +55,7 @@ func (w *workShop) Start() {
 			w.wg.Done()
 			continue
 		}
-		if _, ok := j.(E); ok {
+		if _, ok := j.(e); ok {
 			break
 		}
 		w.pip.out <- true

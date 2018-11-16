@@ -42,11 +42,11 @@ func (js *jobs) len() int {
 
 }
 
-type E int
+type e int
 
 const (
-	EOF E = iota
+	EOF e = iota
 )
 
-func (e E) Do() error               { return nil }
-func (e E) CallBack(f func() error) {}
+func (e e) Do() error               { return nil }
+func (e e) CallBack(f func() error) {}
