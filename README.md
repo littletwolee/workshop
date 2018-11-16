@@ -7,6 +7,15 @@ Golang pipline with channal & waitgroup
 ## Usage
 
 ```
+// in ur shell
+go get github.com/littletwolee/workshop
+```
+
+```
+// import it
+import (
+	"github.com/littletwolee/workshop"
+)
 // get new workshop, chNum is a num that how much worker can working simultaneously
 ws := NewWorkShop(chNum) 
 // u need implementation job interface
