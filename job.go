@@ -12,7 +12,7 @@ type jobs struct {
 type Job interface {
 	Do(obj interface{}) error
 	CallBack(interface{}, func(obj interface{}) error)
-	Exchange() Job
+	//Exchange() Job
 }
 
 func (js *jobs) pop() Job {
@@ -51,4 +51,5 @@ const (
 
 func (e e) Do(obj interface{}) error                                { return nil }
 func (e e) CallBack(obj interface{}, f func(obj interface{}) error) {}
-func (e e) Exchange() Job                                           { return nil }
+
+//func (e e) Exchange() Job                                           { return nil }

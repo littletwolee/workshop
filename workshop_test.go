@@ -7,8 +7,8 @@ import (
 )
 
 func Test_WorkShop(t *testing.T) {
-	num := 1000
-	chNum := 10
+	num := 100000
+	chNum := 2
 	ws := NewWorkShop(chNum)
 	var list []Job
 	for index := 0; index < num; index++ {
@@ -36,7 +36,7 @@ func newTestJob(id int) Job {
 }
 
 func (t *testJob) Do(obj interface{}) error {
-	time.Sleep(1 * time.Second)
+	time.Sleep(time.Second * 1)
 	if t.id%2 == 0 {
 		fmt.Printf("mod 2==0: %d, sex: %s\n", t.id, obj.(*para).sex)
 		return nil
@@ -47,8 +47,4 @@ func (t *testJob) CallBack(obj interface{}, f func(obj interface{}) error) {
 	if err := f(obj); err != nil {
 		fmt.Println(err)
 	}
-}
-
-func (t *testJob) Exchange() Job {
-	return t
 }
