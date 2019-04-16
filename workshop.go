@@ -45,7 +45,6 @@ func (w *workShop) Start(obj interface{}) {
 				}(j, w)
 			case <-w.stop:
 				return
-			default:
 			}
 		}
 	}(w, obj)
